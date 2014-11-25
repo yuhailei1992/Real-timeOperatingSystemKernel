@@ -1,0 +1,288 @@
+Authors: Hongyi Zhang <hongyiz@andrew.cmu.edu>
+		 Hailei Yu <haileiy@andrew.cmu.edu>
+		 Team #22
+
+
+========dagger========
+@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<@@<
+
+
+========cyclone========
+
+Test begin
+Time now is 10
+Time now is 30
+Time now is 60
+Time now is 100
+Time now is 150
+Time now is 210
+Time now is 280
+Time now is 360
+Time now is 450
+Time now is 550
+Time now is 660
+Time now is 780
+Time now is 910
+Time now is 1050
+Time now is 1200
+Time now is 1360
+Time now is 1530
+Time now is 1710
+Time now is 1900
+Time now is 2100
+Time now is 2310
+Time now is 2530
+Time now is 2760
+Time now is 3000
+Time now is 3250
+Time now is 3510
+Time now is 3780
+Time now is 4060
+Time now is 4350
+Time now is 4650
+Test ends!!
+
+========simple_mutex========
+
+succeSs!
+
+========mutex_chaser========
+
+Final mutex0 value 2 == result value 624
+No!
+
+Final mutex1 value 624 == result value 624
+Yes!
+
+Final mutex2 value 624 == result value 624
+Yes!
+
+Final mutex3 value 624 == result value 624
+Yes!
+
+Final mutex4 value 624 == result value 624
+Yes!
+
+Final mutex5 value 624 == result value 624
+Yes!
+
+Final mutex6 value 624 == result value 624
+Yes!
+
+Final mutex7 value 624 == result value 624
+Yes!
+
+Final mutex8 value 624 == result value 624
+Yes!
+
+Final mutex9 value 624 == result value 624
+Yes!
+
+Final mutex10 value 624 == result value 624
+Yes!
+
+Final mutex11 value 624 == result value 624
+Yes!
+
+Final mutex12 value 624 == result value 624
+Yes!
+
+Final mutex13 value 624 == result value 624
+Yes!
+
+Final mutex14 value 624 == result value 624
+Yes!
+
+Final mutex15 value 624 == result value 624
+Yes!
+
+Final mutex16 value 624 == result value 624
+Yes!
+
+Final mutex17 value 624 == result value 624
+Yes!
+
+Final mutex18 value 624 == result value 624
+Yes!
+
+Final mutex19 value 624 == result value 624
+Yes!
+
+Final mutex20 value 624 == result value 624
+Yes!
+
+Final mutex21 value 624 == result value 624
+Yes!
+
+Final mutex22 value 624 == result value 624
+Yes!
+
+Final mutex23 value 624 == result value 624
+Yes!
+
+Final mutex24 value 624 == result value 624
+Yes!
+
+Final mutex25 value 624 == result value 624
+Yes!
+
+Final mutex26 value 624 == result value 624
+Yes!
+
+Final mutex27 value 624 == result value 624
+Yes!
+
+Final mutex28 value 624 == result value 624
+Yes!
+
+Final mutex29 value 624 == result value 624
+Yes!
+
+Final mutex30 value 624 == result value 624
+Yes!
+
+Final mutex31 value 624 == result value 624
+Yes!
+
+TEST PASSED SUCCESSFULLY!
+
+
+========sys_err========
+
+TEST BEGIN!
+
+1. Test create return EINVAL
+        SUCCESS ****************
+
+2. Test create return EFAULT
+        SUCCESS ****************
+
+3. Mutex Create returns ENOMEM
+        SUCCESS ****************
+
+4. Mutex Unlock return EINVAL
+        SUCCESS ****************
+
+5. Mutex Unlock return EPERM
+        SUCCESS ****************
+
+6. Mutex Lock return EINVAL
+        SUCCESS ****************
+
+7. Mutex Lock return success
+        SUCCESS ****************
+
+8. Mutex Lock return EDEADLOCK
+        SUCCESS ****************
+
+9. Mutex Unlock return success
+        SUCCESS ****************
+
+10. Event Wait return EINVAL
+        SUCCESS ****************
+
+TEST END!
+
+========stress========
+
+[the complete results is too long to be copied from gumstix, so I just copied part of it]
+Time is now 16100
+Time is now 16100
+Time is now 16100
+Time is now 16200
+Time is now 16200
+Time is now 16200
+Time is now 16200
+Time is now 16200
+Time is now 16200
+Time is now 16210
+Time is now 16230
+Time is now 16300
+Time is now 16400
+Time is now 16400
+Time is now 16400
+Time is now 16400
+Time is now 16500
+Time is now 16500
+Time is now 16500
+Time is now 16500
+Time is now 16510
+Time is now 16520
+Time is now 16550
+Time is now 16600
+Time is now 16600
+Time is now 16700
+Time is now 16800
+Time is now 16800
+Time is now 16800
+Time is now 16800
+Time is now 16800
+Time is now 16800
+Time is now 16800
+Time is now 16800
+Time is now 16810
+Time is now 16820
+Time is now 16840
+Time is now 16860
+Time is now 16880
+Time is now 16900
+Time is now 16900
+Time is now 16920
+Time is now 17000
+Time is now 17000
+Time is now 17000
+Time is now 17000
+Time is now 17000
+Time is now 17010
+Time is now 17100
+Time is now 17100
+Time is now 17100
+Time is now 17100
+Time is now 17110
+Time is now 17200
+Time is now 17210
+Time is now 17210
+Time is now 17210
+Time is now 17300
+Time is now 17400
+Time is now 17400
+Time is now 17400
+Time is now 17400
+Time is now 17400
+Time is now 17420
+Time is now 17500
+Time is now 17500
+Time is now 17500
+Time is now 17500
+Time is now 17520
+Time is now 17600
+Time is now 17600
+Time is now 17600
+Time is now 17600
+Time is now 17600
+Time is now 17610
+Time is now 17620
+Time is now 17640
+Time is now 17700
+Time is now 17700
+Time is now 17700
+Time is now 17800
+Time is now 17800
+Time is now 17900
+Time is now 18000
+Time is now 18000
+Time is now 18000
+Time is now 18000
+Time is now 18000
+Time is now 18000
+Time is now 18000
+Time is now 18000
+Time is now 18000
+Time is now 18010
+Time is now 18020
+Time is now 18030
+Time is now 18040
+Time is now 18060
+Time is now 18090
+Time is now 18100
+*********** Test PASEED *******************

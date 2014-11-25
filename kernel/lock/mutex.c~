@@ -1,0 +1,164 @@
+/**
+ * @file mutex.c
+ *
+ * @brief Implements mutices.
+ *
+ * @author Hailei Yu <haileiy@andrew.cmu.edu>
+		   Hongyi Zhang <hongyiz@andrew.cmu.edu>
+ *
+ * 
+ * @date  2014-11-22
+ */
+
+//#define DEBUG_MUTEX
+
+#include <lock.h>
+#include <task.h>
+#include <sched.h>
+#include <bits/errno.h>
+#include <arm/psr.h>
+#include <arm/exception.h>
+//#ifdef DEBUG_MUTEX
+#include <exports.h> // temp
+//#endif
+
+#define NULL 0
+mutex_t gtMutex[OS_NUM_MUTEX];
+
+void mutex_init()
+{
+	int i;
+	for (i = 0; i < OS_NUM_MUTEX; ++i)
+	{
+		gtMutex[i].bAvailable = TRUE;
+		gtMutex[i].pHolding_Tcb = FALSE;
+		gtMutex[i].bLock = 0;
+		gtMutex[i].pSleep_queue = NULL;
+	}	
+}
+
+int mutex_create(void)
+{
+	//disable_interrupts();
+
+	int i;
+
+	//printf("into mutext create.\n");
+	for (i = 0; i < OS_NUM_MUTEX; ++i)
+	{
+		if (gtMutex[i].bAvailable)
+		{
+			gtMutex[i].bAvailable = FALSE;
+			//enable_interrupts();
+			return i;
+		}
+	}	
+	//enable_interrupts();
+	return -ENOMEM;
+}
+
+int mutex_lock(int mutex  __attribute__((unused)))
+{
+	//disable_interrupts();
+	// the mutex is invalid
+	if (mutex < 0 || mutex >= OS_NUM_MUTEX || gtMutex[mutex].bAvailable)
+	{
+		//enable_interrupts();
+		return -EINVAL;
+	}
+
+	// deadlock
+	else if (gtMutex[mutex].pHolding_Tcb == get_cur_tcb())
+	{
+		//enable_interrupts();
+		return -EDEADLOCK;
+	}
+
+	// the lock is available
+	else if (!gtMutex[mutex].bLock)
+	{
+		gtMutex[mutex].bLock = TRUE;
+		gtMutex[mutex].pHolding_Tcb = get_cur_tcb();
+		tcb_t *curr_tcb = get_cur_tcb();
+		//(*curr_tcb).native_prio = (*curr_tcb).cur_prio;
+		//(*curr_tcb).cur_prio = 0;
+		(*curr_tcb).holds_lock++;
+		//printf("%u holds lock now\n", curr_tcb->cur_prio);
+		//enable_interrupts();
+		return 0;
+	}
+
+	else
+	{
+		// another task is holding the lock, add current task to the queue
+		tcb_t *tmp = gtMutex[mutex].pSleep_queue;
+		tcb_t *curr_tcb = get_cur_tcb();
+		if (tmp == NULL)
+		{
+			gtMutex[mutex].pSleep_queue = curr_tcb;
+			curr_tcb->sleep_queue = NULL;
+		}
+		else
+		{
+			while (tmp->sleep_queue != NULL)
+			{
+				tmp = (*tmp).sleep_queue;
+			}
+			// append current tcb to the tail
+			(*tmp).sleep_queue = get_cur_tcb();
+			tmp = (*tmp).sleep_queue;
+			(*tmp).sleep_queue = NULL;
+		}
+		
+		dispatch_sleep();
+		//enable_interrupts();
+		return 0;
+	}
+}
+
+int mutex_unlock(int mutex  __attribute__((unused)))
+{
+	// the provided mutex identifier is invalid
+	if (mutex < 0 || mutex >= OS_NUM_MUTEX || gtMutex[mutex].bAvailable)
+	{
+		//enable_interrupts();
+		return -EINVAL;
+	}
+	// the current task does not hold the mutex
+	else if (gtMutex[mutex].pHolding_Tcb != get_cur_tcb())
+	{
+		//enable_interrupts();
+		return -EPERM;
+	}
+	// regular procedure
+	else
+	{
+		tcb_t *curr_tcb = get_cur_tcb();
+		(*curr_tcb).holds_lock--;
+		// restore the priority
+		//(*curr_tcb).cur_prio = (*curr_tcb).native_prio;
+
+		//gtMutex[mutex].bLock = FALSE;
+
+		// add to run_queue
+		tcb_t *to_wake = gtMutex[mutex].pSleep_queue;
+		gtMutex[mutex].pHolding_Tcb = to_wake;
+		if (to_wake)
+		{
+			gtMutex[mutex].pSleep_queue = (*to_wake).sleep_queue;
+			(*to_wake).sleep_queue = NULL;
+			runqueue_add(to_wake, (*to_wake).cur_prio);
+			gtMutex[mutex].bLock = TRUE;
+			//printf("%u holds lock now\n", to_wake->cur_prio);
+			if(gtMutex[mutex].pHolding_Tcb->cur_prio 					< get_cur_prio()){
+				dispatch_sleep();
+			}
+		}
+		else
+			gtMutex[mutex].bLock = FALSE;
+		
+		//enable_interrupts();
+		return 0;
+	}
+}
+

@@ -1,0 +1,14 @@
+/home/caesar/Documents/lab4/tasks/hello/hello.o:  \
+ /home/caesar/Documents/lab4/tasks/hello/hello.c \
+  /home/caesar/Documents/lab4/tasks/libc/include/unistd.h \
+  /home/caesar/Documents/lab4/tasks/libc/include/bits/fileno.h \
+  /home/caesar/Documents/lab4/tasks/libc/include/sys/types.h \
+  /home/caesar/Documents/lab4/tasks/libc/include/bits/types.h
+
+/home/caesar/Documents/lab4/tasks/libc/include/unistd.h:
+
+/home/caesar/Documents/lab4/tasks/libc/include/bits/fileno.h:
+
+/home/caesar/Documents/lab4/tasks/libc/include/sys/types.h:
+
+/home/caesar/Documents/lab4/tasks/libc/include/bits/types.h:

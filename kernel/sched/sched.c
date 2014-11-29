@@ -8,6 +8,7 @@
  * @date  2014-11-22
  */
 
+#include <exports.h>
 #include <types.h>
 #include <assert.h>
 
@@ -36,7 +37,7 @@ void init_idle(tcb_t* idle_task){
 	idle_task->native_prio = IDLE_PRIO;
 	idle_task->cur_prio = IDLE_PRIO;
 	idle_task->sleep_queue = 0;
-	idle_task->holds_lock = 1;
+	idle_task->holds_lock = 0;
 	idle_task->context.r8 = global_data;
 	idle_task->context.lr = (void*)idle;
 	idle_task->context.sp = idle_task->kstack_high;
@@ -47,6 +48,16 @@ void init_idle(tcb_t* idle_task){
 /* given the priority, get the corresponding tcb */
 tcb_t* get_tcb_by_prio(uint8_t prio){
 	return &(system_tcb[prio]);
+}
+
+void promote_cur_task(){
+	get_cur_tcb()->cur_prio = 0;
+}
+
+void degrad_cur_task(){
+	if(get_cur_tcb()->holds_lock > 0)
+		return;
+	get_cur_tcb()->cur_prio = get_cur_tcb()->native_prio;
 }
 
 void sched_init(task_t* main_task  __attribute__((unused)))
@@ -88,9 +99,11 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	/* add the idle task to runqueue */
 	runqueue_add(&(system_tcb[IDLE_PRIO]), IDLE_PRIO);
 	/* add regular tasks to runqueue */
+
+	/*for part2: assign priority from 1, save 0 for HLP*/
 	for(i = 0; i < num_tasks; i++){
-		uint8_t prio = (uint8_t)i;
-		init_task(&((*tasks)[i]), i, prio);
+		uint8_t prio = (uint8_t)i + 1;
+		init_task(&((*tasks)[i]), i + 1, prio);
 		runqueue_add(&(system_tcb[i]), prio);
 	}
 }

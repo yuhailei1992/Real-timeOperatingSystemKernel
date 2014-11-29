@@ -19,6 +19,7 @@ int once = 0;
 int even_t2 = 1;
 int even_t3 = 1;
 volatile int mid = -1;
+volatile int mid2 = -1;
 
 void panic(const char* str)
 {
@@ -29,68 +30,48 @@ void panic(const char* str)
 void fun1(void* str)
 {
 	// On first pass, create the shared mutex
-	mid = mutex_create();
-	while(1) {
-		if(even_t1) {	
-			// first and last s
-			putchar((int)str);
-			// terminating
-			if(once >0) {
-				putchar((int)'!');
-				while(1) mid++;
-			}
-			once = 1;
-			even_t1 = 0;
-		}	 
- 		else {
-			// should not succeed right away
-			mutex_lock(mid);
-			// prints e
-			putchar((int)'e');
-			even_t1 = 1;
-			mutex_unlock(mid);
-		}		
-		if (event_wait(0) < 0) {
-				panic("Dev 0 failed");
-	  }
+	while(1){
+	if(once == 0){
+		mid = mutex_create();
+		mid2 = mutex_create();
+	}
+	mutex_lock(mid);
+	//puts("mid locked\n");
+	mutex_lock(mid2);
+	// prints e
+	puts("fun1\n");
+	//even_t1 = 1;
+	mutex_unlock(mid);
+	mutex_unlock(mid2);
+	event_wait(0);
 	}
 }
 
 void fun2(void* str)
 {
-	while(1)
-	{
-		if(even_t2) {
-			// prints u
-			putchar((int)str);
-			even_t2 = 0;
-		}
- 		else {
-			// should not succeed right away
-			mutex_lock(mid);
-			// prints s!
-			putchar((int)'S');
-		}
-		if (event_wait(1) < 0)
-			panic("Dev 1 failed");
+	while(1){
+	mutex_lock(mid);
+	// prints e
+	puts("fun2\n");
+	sleep(5000);
+	//even_t1 = 1;
+	puts("fun2\n");
+	mutex_unlock(mid);
+	event_wait(1);
 	}
 }
 
 void fun3(void* str)
 {
-	while(1)
-	{
-		//c 
-		putchar((int)str);
-		if(even_t3) {
-			// should succeed
-			mutex_lock(mid);
-			even_t3 = 0;
-		} else {
-			mutex_unlock(mid);
-		}
-		if (event_wait(2) < 0)
-			panic("Dev 2 failed");
+	while(1){
+	mutex_lock(mid);
+	// prints e
+	puts("fun3\n");
+	//sleep(5000);
+	//even_t1 = 1;
+	//puts("fun2\n");
+	mutex_unlock(mid);
+	event_wait(1);
 	}
 }
 int main(int argc, char** argv)

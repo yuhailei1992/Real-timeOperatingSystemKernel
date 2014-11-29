@@ -82,6 +82,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
 		gtMutex[mutex].pHolding_Tcb = get_cur_tcb();
 		tcb_t *curr_tcb = get_cur_tcb();
 		(*curr_tcb).holds_lock++;
+		promote_cur_task();
 		return 0;
 	}
 	/* another is holding the mutex */
@@ -133,6 +134,7 @@ int mutex_unlock(int mutex  __attribute__((unused)))
 	{
 		tcb_t *curr_tcb = get_cur_tcb();
 		(*curr_tcb).holds_lock--;
+		degrad_cur_task();
 		/* add to run_queue */
 		tcb_t *to_wake = gtMutex[mutex].pSleep_queue;
 		gtMutex[mutex].pHolding_Tcb = to_wake;

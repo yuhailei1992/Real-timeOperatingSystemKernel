@@ -94,6 +94,9 @@ int event_wait(unsigned int dev  __attribute__((unused)))
   {
     return -EINVAL;
   }
+  else if(get_cur_tcb()->holds_lock > 0){
+    return -EHOLDSLOCK;
+  }
   else
   {
     dev_wait(dev);

@@ -18,6 +18,10 @@ void sched_init(task_t* main_task);
 void dispatch_save(void);
 void dispatch_nosave(void);
 void dispatch_sleep(void);
+/*for part2: change current task's priority to 0*/
+void promote_cur_task();
+/*for part2: change current task's priority to its native value*/
+void degrad_cur_task();
 
 /* Entry assist */
 void launch_task(void); /* takes lambda and argument in r4, r5 */

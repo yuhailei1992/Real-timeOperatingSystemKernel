@@ -41,4 +41,6 @@
 
 #define ESCHED       100    /* Unable to schedule */
 
+#define EHOLDSLOCK	  59	/*for part2: task calls event_wait when hold a lock*/
+
 #endif /* BITS_ERRNO_H */

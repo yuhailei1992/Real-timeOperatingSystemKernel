@@ -75,6 +75,14 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
   else
   {
     rank_by_T(tasks, num_tasks);
+    if (assign_schedule(&tasks, num_tasks) == 1)
+    {
+      printf("can be scheduled\n");
+    }
+    else
+    {
+      printf("cannot be scheduled\n");
+    }
     allocate_tasks(&tasks, num_tasks);
     dispatch_nosave();  
     return 0;

@@ -82,6 +82,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
 		gtMutex[mutex].pHolding_Tcb = get_cur_tcb();
 		tcb_t *curr_tcb = get_cur_tcb();
 		(*curr_tcb).holds_lock++;
+		//set currrent task's priority to 0
 		promote_cur_task();
 		return 0;
 	}
@@ -134,6 +135,9 @@ int mutex_unlock(int mutex  __attribute__((unused)))
 	{
 		tcb_t *curr_tcb = get_cur_tcb();
 		(*curr_tcb).holds_lock--;
+
+		//degrad current task's priority back if 
+		//it holds no lock now.
 		degrad_cur_task();
 		/* add to run_queue */
 		tcb_t *to_wake = gtMutex[mutex].pSleep_queue;

@@ -50,10 +50,13 @@ tcb_t* get_tcb_by_prio(uint8_t prio){
 	return &(system_tcb[prio]);
 }
 
+//promote current task's priority to 0
 void promote_cur_task(){
 	get_cur_tcb()->cur_prio = 0;
 }
 
+//if current task hold no lock, degrade it's priority to 
+//its native value
 void degrad_cur_task(){
 	if(get_cur_tcb()->holds_lock > 0)
 		return;

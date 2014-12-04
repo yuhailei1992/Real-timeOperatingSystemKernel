@@ -42,6 +42,7 @@ void fun1(void* str)
 	tasks[0].stack_pos = (void*)0xa1000000;
 	tasks[0].C = 1;
 	tasks[0].T = PERIOD_DEV3;
+	tasks[0].B = 0;
 	
 	task_create(tasks, 1);
 	// task create wipe out the task, therefore never reaches here

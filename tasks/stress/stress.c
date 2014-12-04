@@ -79,13 +79,16 @@ int main(int argc, char** argv)
 		tasks[i].stack_pos = (void*)(0xa2000000 + 0x10000 * i);
 		tasks[i].C = (i+1);
 		tasks[i].T = (i+1)*100;
+		tasks[i].B = 0;
 		score[i] = 0;
 	}
 	tasks[i].lambda = fun2;
 	tasks[i].data = (void*)i;
   tasks[i].stack_pos = (void*)(0xa2000000 + 0x10000 * i);
   tasks[i].C = 0;
+	tasks[i].B = 0;
 	tasks[i].T = END_TIME;
+	puts("going to create task.");
 	task_create(tasks, NUM_TASK);
 	argc=argc; /* remove compiler warning */
 	argv=argv; /* remove compiler warning */

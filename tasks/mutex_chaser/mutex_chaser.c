@@ -166,24 +166,28 @@ int main(int argc, char** argv)
 	tasks[0].stack_pos = (void*)0xa2000000;
 	tasks[0].C = 1;
 	tasks[0].T = PERIOD_DEV0;
+	tasks[0].B = 0;
 
 	tasks[1].lambda = fun3;
 	tasks[1].data = (void*)'3';
 	tasks[1].stack_pos = (void*)0xa1000000;
 	tasks[1].C = 1;
 	tasks[1].T = PERIOD_DEV1;
+	tasks[1].B = 0;
 
     tasks[2].lambda = fun4;
 	tasks[2].data = (void*)'4';
 	tasks[2].stack_pos = (void*)0xa1500000;
 	tasks[2].C = 1;
 	tasks[2].T = PERIOD_DEV2;
+	tasks[2].B = 0;
     //highest priority task
     tasks[3].lambda = fun1;
 	tasks[3].data = (void*)'1';
 	tasks[3].stack_pos = (void*)0xa2500000;
 	tasks[3].C = 1;
 	tasks[3].T = PERIOD_DEV3;
+	tasks[3].B = 0;
 
 	task_create(tasks, 4);
 	argc = argc ;
